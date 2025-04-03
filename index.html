@@ -19,6 +19,7 @@
             padding: 10px 20px;
             font-size: 16px
 			margin-top:5px;
+			height:35px;
         }
 
         /* Modal styles */
@@ -79,6 +80,8 @@
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
+			            justify-content: center;
+            align-items: center;
         }
 		.container {
 		    width: 90%;
@@ -86,6 +89,7 @@
             padding: 20px;
             background-color: #f0f0f0;
             border: 1px solid #ccc;
+            align-items: center;
 			
     </style>
 </head>
@@ -95,7 +99,8 @@
     <form id="votingForm">
         <!-- Mobile Number Input -->
         <label for="mobile">Enter your Mobile Number (as unique ID):</label>
-        <input type="text" id="mobile" name="mobile" required>
+        <input type="text" id="mobile"style="font-size:24px" name="mobile" required>
+		<br>
         <button type="button" onclick="startVoting()">Start Voting</button>
     </form>
 
