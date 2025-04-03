@@ -9,18 +9,20 @@
             font-family: Arial, sans-serif;
             margin: 0;
         }
-        .candidate-list {
-            margin-bottom: 20px;
-			width:100%;
-			
-        }
-        .candidate-list input {
-            margin-right: 10px;
+  .candidate-list {
+    margin-bottom: 20px;
+    width: 100%;  /* Ensure the candidate list takes up the full width */
+}
+
+.candidate-list select {
+    width: 100%;  /* Make the select box inside the candidate list take up 100% width */
+    font-size: 24px;  /* Adjust font size as needed */
+    padding: 10px;  /* Optional: Add some padding for better readability */
 			
         }
         button {
             padding: 10px 20px;
-            font-size: 16px
+            font-size: 50px
 			margin-top:20px;
 			height:35px;
 			width:100%;
@@ -192,7 +194,9 @@
 
         <!-- Voting buttons -->
         <button type="button" onclick="submitVote()">Submit Survey</button>
-        <button type="button" onclick="showResetModal()">Reset Data</button>
+		<br>
+        <br>
+		<button type="button" onclick="showResetModal()">Reset Data</button>
     </div>
 
     <!-- The Modal -->
