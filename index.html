@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .candidate-list {
+            margin-bottom: 20px;
+        }
+        .candidate-list input {
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0); /* Black background */
+            background-color:black; /* rgba(0, 0, 0, 0.4);  Semi-transparent background */
+            padding-top: 60px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Password Reset Modal */
+        .reset-modal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .reset-modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+		.container {
+		    width: 80%;
+            margin: 0 auto; /* Centers the container */
+            padding: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+    </style>
+</head>
+<body>
+	<div class="container">
+    <h1>Survey</h1>
+    <form id="votingForm">
+        <!-- Mobile Number Input -->
+        <label for="mobile">Enter your Mobile Number (as unique ID):</label>
+        <input type="text" id="mobile" name="mobile" required>
+        <button type="button" onclick="startVoting()">Start Voting</button>
+    </form>
+
+    <div id="votingSection" style="display: none;">
+        <h2> Governor</h2>
+        <div class="candidate-list" id="governorList">
+            <select id="governor">
+                <option value="">-- Select Governor --</option>
+                <option value="0">JALOSJOS, BULLET (PFP)</option>
+                <option value="1">OBNIMAGA, JAVIER (IND)</option>
+                <option value="2">UY, DAREL DEXTER (LAKAS)</option>
+            </select>
+        </div>
+
+        <h2> Vice Governor</h2>
+        <div class="candidate-list" id="viceGovernorList">
+            <select id="viceGovernor">
+                <option value="">-- Select Vice Governor --</option>
+                <option value="0">MAGALLANES, GAW JOJO (PFP)</option>
+                <option value="1">NAPIGQUIT, JULIUS (LAKAS)</option>
+            </select>
+        </div>
+
+        <h2> House of Representative</h2>
+        <div class="candidate-list" id="houseRepList">
+            <select id="houseRep">
+                <option value="">-- Select House Representative --</option>
+                <option value="0">AMATONG, IAN (LP)</option>
+                <option value="1">JALOSJOS, CESAR (NP)</option>
+            </select>
+        </div>
+
+        <h2>Sangguniang Bayan (Provincial Board)</h2>
+        <div class="candidate-list" id="sangguniangBayanList">
+            <label><input type="checkbox" name="sangguniangBayan" value="0">ANG, ATTORNEY ANG (NP)</label><br>
+            <label><input type="checkbox" name="sangguniangBayan" value="1">BOLANDO, KAY MARIE (LAKAS)</label><br>
+            <label><input type="checkbox" name="sangguniangBayan" value="2">BRILLANTES, JR (LP)</label><br>
+            <label><input type="checkbox" name="sangguniangBayan" value="3">BUCTUAN, CONKEE (PFP)</label><br>
+            <label><input type="checkbox" name="sangguniangBayan" value="4">MEJORADA, ATTY. LEO (LP)</label><br>
+            <label><input type="checkbox" name="sangguniangBayan" value="5">SORIANO, BOY (NP)</label><br>
+            <label><input type="checkbox" name="sangguniangBayan" value="6">UY, VENUS (LAKAS)</label><br>
+            <p>Maximum of 4 selections allowed</p>
+        </div>
+
+        <h2>Mayor</h2>
+        <div class="candidate-list" id="mayorList">
+            <select id="mayor">
+                <option value="">-- Select Mayor --</option>
+                <option value="0">MARIBOJOC, WILLIAM (PFP)</option>
+                <option value="1">BRILLANTES, DOC RUTH (LAKAS)</option>
+            </select>
+        </div>
+
+        <h2>Vice Mayor</h2>
+        <div class="candidate-list" id="viceMayorList">
+            <select id="viceMayor">
+                <option value="">-- Select Vice Mayor --</option>
+                <option value="0">BUZON, MICHAEL (LAKAS)</option>
+                <option value="1">BALUCOS, JONATHAN (NP)</option>
+            </select>
+        </div>
+
+        <h2>Sangguniang Panlungsod (City Council)</h2>
+        <div class="candidate-list" id="sangguniangPanlungsodList">
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="0"> ACAS, BRENT (LAKAS)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="1"> ACAS-YAP, MARICHU (LAKAS)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="2"> DIALO, SALATIEL (PFP)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="3"> FELLAZAR, ATTY. BOMBOM (LAKAS)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="4"> JANANG, IMELDA (APP)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="5"> LAGARE, JOSE REIL (PFP)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="6"> LITERATUS, GINA (NP)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="7"> MARAON, MYRNA (LAKAS)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="8"> MELLEJOR, RICARDO (LP)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="9"> MURILLO, RONIE (APP)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="10"> PABATAO, RICHARD (NP)</label><br>
+			<label><input type="checkbox" name="sangguniangPanlungsod" value="11"> PAMIL, JOHN KENNETH (LAKAS)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="12"> SALDIA, GLORIA (PFP)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="13"> SULTAN, EDGAR (LAKAS)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="14">  TOLIN, ORLAN (LAKAS)</label><br>
+            <label><input type="checkbox" name="sangguniangPanlungsod" value="15"> TOMARONG, RICHARD (PFP)</label><br>
+			<p>Maximum of 7 selections allowed</p>
+        </div>
+
+        <!-- Voting buttons -->
+        <button type="button" onclick="submitVote()">Submit Survey</button>
+        <button type="button" onclick="showResetModal()">Reset Data</button>
+    </div>
+
+    <!-- The Modal -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Survey Results</h2>
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <!-- Reset Modal -->
+    <div id="resetModal" class="reset-modal">
+        <div class="reset-modal-content">
+            <h2>Reset Voting Data</h2>
+            <p>Enter the reset password to confirm:</p>
+            <input type="password" id="resetPassword" placeholder="Enter password">
+            <button type="button" onclick="resetData()">Confirm Reset</button>
+            <button type="button" onclick="closeResetModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+<script>
+    // List of candidates for each position
+    const candidates = {
+        governor: [
+            "JALOSJOS, BULLET (PFP)",
+            "OBNIMAGA, JAVIER (IND)",
+            "UY, DAREL DEXTER (LAKAS)"
+        ],
+        viceGovernor: [
+            "MAGALLANES, GAW JOJO (PFP)",
+            "NAPIGQUIT, JULIUS (LAKAS)"
+        ],
+        houseRep: [
+            "AMATONG, IAN (LP)",
+            "JALOSJOS, CESAR (NP)"
+        ],
+        sangguniangBayan: [
+            "ANG, ATTORNEY ANG (NP)",
+            "BOLANDO, KAY MARIE (LAKAS)",
+            "BRILLANTES, JR (LP)",
+            "BUCTUAN, CONKEE (PFP)",
+            "MEJORADA, ATTY. LEO (LP)",
+            "SORIANO, BOY (NP)",
+            "UY, VENUS (LAKAS)"
+        ],
+        mayor: [
+            "MARIBOJOC, WILLIAM (PFP)",
+            "BRILLANTES, DOC RUTH (LAKAS)"
+        ],
+        viceMayor: [
+            "BUZON, MICHAEL (LAKAS)",
+            "BALUCOS, JONATHAN (NP)"
+        ],
+        sangguniangPanlungsod: [
+    "ACAS, BRENT (LAKAS)",
+    "ACAS-YAP, MARICHU (LAKAS)",
+    "DIALO, SALATIEL (PFP)",
+    "FELLAZAR, ATTY. BOMBOM (LAKAS)",
+    "JANANG, IMELDA (APP)",
+    "LAGARE, JOSE REIL (PFP)",
+    "LITERATUS, GINA (NP)",
+    "MARAON, MYRNA (LAKAS)",
+    "MELLEJOR, RICARDO (LP)",
+    "MURILLO, RONIE (APP)",
+    "PABATAO, RICHARD (NP)",
+    "PAMIL, JOHN KENNETH (LAKAS)",
+    "SALDIA, GLORIA (PFP)",
+    "SULTAN, EDGAR (LAKAS)",
+    "TOLIN, ORLAN (LAKAS)",
+    "TOMARONG, RICHARD (PFP)"
+]
+
+    };
+
+    let votersData = JSON.parse(localStorage.getItem('votersData')) || {};
+    let candidatesVotes = JSON.parse(localStorage.getItem('candidatesVotes')) || {
+        governor: Array(candidates.governor.length).fill(0),
+        viceGovernor: Array(candidates.viceGovernor.length).fill(0),
+        houseRep: Array(candidates.houseRep.length).fill(0),
+        sangguniangBayan: Array(candidates.sangguniangBayan.length).fill(0),
+        mayor: Array(candidates.mayor.length).fill(0),
+        viceMayor: Array(candidates.viceMayor.length).fill(0),
+        sangguniangPanlungsod: Array(candidates.sangguniangPanlungsod.length).fill(0)
+    };
+
+    const resetPassword = "admin123";  // Reset password to confirm
+		        document.addEventListener("contextmenu", function(event) {
+					event.preventDefault();
+				});
+    function startVoting() {
+        const mobile = document.getElementById("mobile").value.trim();
+        if (!mobile) {
+            alert("Please enter your mobile number.");
+            return;
+        }
+
+        if (votersData[mobile]) {
+            alert("You have already voted!");
+            return;
+        }
+
+        document.getElementById("votingForm").style.display = "none";
+        document.getElementById("votingSection").style.display = "block";
+    }
+
+function submitVote() {
+    const mobile = document.getElementById("mobile").value.trim();
+    const governorVote = document.getElementById("governor").value;
+    const viceGovernorVote = document.getElementById("viceGovernor").value;
+    const houseRepVote = document.getElementById("houseRep").value;
+
+    // Get selected Sangguniang Bayan votes
+    const sangguniangBayanVotes = Array.from(document.querySelectorAll('input[name="sangguniangBayan"]:checked')).map(checkbox => checkbox.value);
+    const mayorVote = document.getElementById("mayor").value;
+    const viceMayorVote = document.getElementById("viceMayor").value;
+
+    // Get selected Sangguniang Panlungsod votes
+    const sangguniangPanlungsodVotes = Array.from(document.querySelectorAll('input[name="sangguniangPanlungsod"]:checked')).map(checkbox => checkbox.value);
+
+    if (sangguniangBayanVotes.length > 4 || sangguniangPanlungsodVotes.length > 7) {
+        alert("You have exceeded the maximum number of candidates for Sangguniang Bayan or Sangguniang Panlungsod.");
+        return;
+    }
+
+    // Save the vote
+    votersData[mobile] = { governorVote, viceGovernorVote, houseRepVote, sangguniangBayanVotes, mayorVote, viceMayorVote, sangguniangPanlungsodVotes };
+
+    // Update the votes count
+    if (governorVote) candidatesVotes.governor[governorVote]++;
+    if (viceGovernorVote) candidatesVotes.viceGovernor[viceGovernorVote]++;
+    if (houseRepVote) candidatesVotes.houseRep[houseRepVote]++;
+    sangguniangBayanVotes.forEach(vote => candidatesVotes.sangguniangBayan[vote]++);
+    if (mayorVote) candidatesVotes.mayor[mayorVote]++;
+    if (viceMayorVote) candidatesVotes.viceMayor[viceMayorVote]++;
+
+    // Fix: Ensure Sangguniang Panlungsod votes are being counted
+    sangguniangPanlungsodVotes.forEach(vote => {
+        candidatesVotes.sangguniangPanlungsod[vote]++;
+    });
+    
+    // Save votes in localStorage
+    localStorage.setItem('votersData', JSON.stringify(votersData));
+    localStorage.setItem('candidatesVotes', JSON.stringify(candidatesVotes));
+
+    alert("Thank you for participating!");
+    showResults();
+}
+
+
+function showResults() {
+    let resultsHTML = "";
+
+    // Display results for each position
+    Object.keys(candidates).forEach(position => {
+        resultsHTML += `<h3>${position.replace(/([A-Z])/g, ' $1').toUpperCase()}</h3>`;
+        
+        // Prepare an array of candidates with their votes
+        const candidatesWithVotes = candidates[position].map((candidate, index) => {
+            return {
+                name: candidate,
+                votes: candidatesVotes[position][index] || 0
+            };
+        });
+
+        // Sort the candidates by votes in descending order
+        candidatesWithVotes.sort((a, b) => b.votes - a.votes);
+
+        // Display sorted candidates
+        candidatesWithVotes.forEach(candidate => {
+            resultsHTML += `<p>${candidate.name}: ${candidate.votes} votes</p>`;
+        });
+    });
+
+    document.getElementById("results").innerHTML = resultsHTML;
+    document.getElementById("resultModal").style.display = "block";
+}
+
+
+    function closeModal() {
+        document.getElementById("resultModal").style.display = "none";
+    }
+
+    function showResetModal() {
+        document.getElementById("resetModal").style.display = "block";
+    }
+
+    function closeResetModal() {
+        document.getElementById("resetModal").style.display = "none";
+    }
+
+    function resetData() {
+        const enteredPassword = document.getElementById("resetPassword").value;
+        if (enteredPassword === resetPassword) {
+            localStorage.removeItem('votersData');
+            localStorage.removeItem('candidatesVotes');
+            votersData = {};
+            candidatesVotes = {
+                governor: Array(candidates.governor.length).fill(0),
+                viceGovernor: Array(candidates.viceGovernor.length).fill(0),
+                houseRep: Array(candidates.houseRep.length).fill(0),
+                sangguniangBayan: Array(candidates.sangguniangBayan.length).fill(0),
+                mayor: Array(candidates.mayor.length).fill(0),
+                viceMayor: Array(candidates.viceMayor.length).fill(0),
+                sangguniangPanlungsod: Array(candidates.sangguniangPanlungsod.length).fill(0)
+            };
+            alert("Voting data has been reset.");
+            closeResetModal();
+        } else {
+            alert("Incorrect password.");
+        }
+    }
+</script>
+</body>
+</html>
