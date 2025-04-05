@@ -157,7 +157,7 @@
 	 </div>
    <div id="votingSection" style="display: none;">
     <div class="containerx">
-        <h2>Governor</h2>
+        <h2><center>Governor</center></h2>
         <div class="candidate-list" id="governorList">
             <select id="governor">
                 <option value="">-- Select Governor --</option>
@@ -168,7 +168,7 @@
         </div>
     </div>
 		<div class="containerx">
-        <h2> Vice Governor</h2>
+        <h2><center> Vice Governor</center></h2>
         <div class="candidate-list" style="font-size:24px; width:98%" id="viceGovernorList">
             <select id="viceGovernor">
                 <option value="">-- Select Vice Governor --</option>
@@ -178,7 +178,7 @@
         </div>
 		</div>
 		<div class="containerx">
-        <h2> House of Representative</h2>
+        <h2><center> House of Representative</center></h2>
         <div class="candidate-list" id="houseRepList">
             <select id="houseRep">
                 <option value="">-- Select House Representative --</option>
@@ -188,7 +188,7 @@
         </div>
 		</div>
 		<div class="containerx">
-        <h2>Sangguniang Bayan (Provincial Board)</h2>
+        <h2><center>Sangguniang Bayan (Provincial Board 3rd district)</center></h2>
         <div class="candidate-list" id="sangguniangBayanList">
             <label><input type="checkbox" name="sangguniangBayan" value="0">ANG, ATTORNEY ANG (NP)</label><br>
             <label><input type="checkbox" name="sangguniangBayan" value="1">BOLANDO, KAY MARIE (LAKAS)</label><br>
@@ -201,7 +201,7 @@
         </div>
 		</div>
 		<div class="containerx">
-        <h2>Mayor</h2>
+        <h2><center>Mayor</center></h2>
         <div class="candidate-list" id="mayorList">
             <select id="mayor">
                 <option value="">-- Select Mayor --</option>
@@ -211,7 +211,7 @@
         </div>
 		</div>
 		<div class="containerx">
-        <h2>Vice Mayor</h2>
+        <h2><center>Vice Mayor</center></h2>
         <div class="candidate-list" id="viceMayorList">
             <select id="viceMayor">
                 <option value="">-- Select Vice Mayor --</option>
@@ -221,7 +221,7 @@
         </div>
 		</div>
 		<div class="containerx">
-        <h2>Sangguniang Panlungsod (City Council)</h2>
+        <h2><center>Sangguniang Panlungsod (Salug)</center></h2>
         <div class="candidate-list" id="sangguniangPanlungsodList">
             <label><input type="checkbox" name="sangguniangPanlungsod" value="0"> ACAS, BRENT (LAKAS)</label><br>
             <label><input type="checkbox" name="sangguniangPanlungsod" value="1"> ACAS-YAP, MARICHU (LAKAS)</label><br>
@@ -252,24 +252,24 @@
     <div id="resultModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Survey Results</h2>
+            <h2><center>Survey Results</center></h2>
             <div id="results"></div>
         </div>
     </div>
 	<!-- Modal for Password Prompt -->
 <div id="passwordModal" style="display: none;">
     <div class="modal-content">
-        <h2>Please Enter Password to View Results</h2>
-        <input type="password" id="passwordInput" style="font-size:24px; width:98%" placeholder="Enter password">
+        <h2><center>Please Enter Password to View Results</center></h2>
+        <input type="password" id="passwordInput" style="font-size:24px; width:98%; text-align:center" placeholder="Enter password">
         <br><br>
-        <button onclick="validatePassword()">Submit</button>
+        <button onclick="validatePassword()">View Results</button>
         <button onclick="closePasswordModal()">Cancel</button>
     </div>
 </div>
     <!-- Reset Modal -->
     <div id="resetModal" class="reset-modal">
         <div class="reset-modal-content">
-            <h2>Reset Survey Data</h2>
+            <h2><center>Reset Survey Data</center></h2>
             <p>Enter the reset password to confirm:</p>
             <input type="password" id="resetPassword" style="font-size:24px; width:98%; text-align:center" placeholder="Enter password">
             <button type="button" onclick="resetData()">Confirm Reset</button>
@@ -346,7 +346,7 @@
         sangguniangPanlungsod: Array(candidates.sangguniangPanlungsod.length).fill(0)
     };
 
-    const resetPassword = "admin123";  // Reset password to confirm
+    const resetPassword = "5122025"; 
 		        document.addEventListener("contextmenu", function(event) {
 					event.preventDefault();
 				});
@@ -467,7 +467,7 @@ function resetData() {
     }
 }
 
-const correctPassword = "111";  // Set your password here
+const correctPassword = "5122025";  // Set your password here
 
 function validatePassword() {
     const enteredPassword = document.getElementById("passwordInput").value;
