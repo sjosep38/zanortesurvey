@@ -106,12 +106,34 @@
             align-items: center;
 			margin-bottom:10px;
 
+		}
+		.containerxx{
+		    width: 95%;
+            /*margin: 0 auto;  Centers the container */
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            align-items: center;
+			margin-bottom:10px;
+
 		}	
+/* Style the modal background */
+#passwordModal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+}	
     </style>
 </head>
 <body>
 	<div class="container">
-    <h1>Survey</h1>
+    <h1>For Survey Only</h1>
     <form id="votingForm">
         <!-- Mobile Number Input -->
         <label for="mobile">Enter your Mobile Number (as unique ID):</label>
@@ -121,21 +143,21 @@
         <button type="button" onclick="startVoting()">Start the Survey</button>
     </form>
 	<br>
-	<div class="containerx">
+	<div class="containerxx" id="containerxx">
 	<h2><CENTER>PAALALA!</CENTER></h2>
 	<br>
 	<p>* Educational purposes only</p>
-	<p>* Not to for election</p>
+	<p>* Not for election</p>
 	<p>* For fun</p>
 	<p>* Not connected in any institution, &nbsp;&nbsp;organization etc. </p>
 	<p>* Not for sale</p>
 	<p>* survey Lang po ito </p>
 	<p>* Walang kinalaman ang COMELEC</p>
 	 </div>
-    <div id="votingSection" style="display: none;">
-       <div class="containerx">
-	   <h2> Governor</h2>
-        <div class="candidate-list"style="font-size:24px; width:98%" id="governorList">
+   <div id="votingSection" style="display: none;">
+    <div class="containerx">
+        <h2>Governor</h2>
+        <div class="candidate-list" id="governorList">
             <select id="governor">
                 <option value="">-- Select Governor --</option>
                 <option value="0">JALOSJOS, BULLET (PFP)</option>
@@ -143,7 +165,7 @@
                 <option value="2">UY, DAREL DEXTER (LAKAS)</option>
             </select>
         </div>
-		</div>
+    </div>
 		<div class="containerx">
         <h2> Vice Governor</h2>
         <div class="candidate-list" style="font-size:24px; width:98%" id="viceGovernorList">
@@ -220,9 +242,10 @@
         </div>
 		</div>
         <!-- Voting buttons -->
-        <button type="button" onclick="submitVote()">Submit Survey</button>
-		<button type="button" onclick="showResetModal()">Reset Data</button>
-    </div>
+    <button type="button" onclick="submitVote()">Submit Survey</button>
+    <button type="button" onclick="showResultsmodal()">Show Result</button>
+    <button type="button" onclick="showResetModal()">Reset Data</button>
+</div>
 
     <!-- The Modal -->
     <div id="resultModal" class="modal">
@@ -232,7 +255,16 @@
             <div id="results"></div>
         </div>
     </div>
-
+	<!-- Modal for Password Prompt -->
+<div id="passwordModal" style="display: none;">
+    <div class="modal-content">
+        <h2>Please Enter Password to View Results</h2>
+        <input type="password" id="passwordInput" style="font-size:24px; width:98%" placeholder="Enter password">
+        <br><br>
+        <button onclick="validatePassword()">Submit</button>
+        <button onclick="closePasswordModal()">Cancel</button>
+    </div>
+</div>
     <!-- Reset Modal -->
     <div id="resetModal" class="reset-modal">
         <div class="reset-modal-content">
@@ -240,9 +272,13 @@
             <p>Enter the reset password to confirm:</p>
             <input type="password" id="resetPassword" style="font-size:24px; width:98%; text-align:center" placeholder="Enter password">
             <button type="button" onclick="resetData()">Confirm Reset</button>
+			
             <button type="button" onclick="closeResetModal()">Cancel</button>
         </div>
     </div>
+	
+
+
 </div>
 <script>
     // List of candidates for each position
@@ -310,7 +346,7 @@
     };
 
     const resetPassword = "admin123";  // Reset password to confirm
-		        document.addEventListener("contexaaatmenu", function(event) {
+		        document.addEventListener("contextmenu", function(event) {
 					event.preventDefault();
 				});
     function startVoting() {
@@ -324,9 +360,10 @@
             alert("You have already voted!");
             return;
         }
-
+		document.getElementById("containerxx").style.display = "none";
         document.getElementById("votingForm").style.display = "none";
         document.getElementById("votingSection").style.display = "block";
+		
     }
 
 function submitVote() {
@@ -369,31 +406,31 @@ function submitVote() {
     localStorage.setItem('candidatesVotes', JSON.stringify(candidatesVotes));
 
     alert("Thank you for participating!");
-    showResults();
+    //showResults();
+	document.querySelector('button[type="button"]').disabled = true;
+	location.reload();
+}
+function showResultsmodal() {
+    // Show the password modal when "Show Result" is clicked
+    document.getElementById("passwordModal").style.display = "block";
 }
 
 
-function showResults() {
+function showElectionResults() {
     let resultsHTML = "";
 
-    // Display results for each position
     Object.keys(candidates).forEach(position => {
         resultsHTML += `<h3>${position.replace(/([A-Z])/g, ' $1').toUpperCase()}</h3>`;
         
-        // Prepare an array of candidates with their votes
-        const candidatesWithVotes = candidates[position].map((candidate, index) => {
-            return {
-                name: candidate,
-                votes: candidatesVotes[position][index] || 0
-            };
-        });
+        const candidatesWithVotes = candidates[position].map((candidate, index) => ({
+            name: candidate,
+            votes: candidatesVotes[position][index] || 0
+        }));
 
-        // Sort the candidates by votes in descending order
         candidatesWithVotes.sort((a, b) => b.votes - a.votes);
 
-        // Display sorted candidates
         candidatesWithVotes.forEach(candidate => {
-            resultsHTML += `<p>${candidate.name}: ${candidate.votes} votes</p>`;
+            resultsHTML += `<p>${candidate.name}: ${candidate.votes} </p>`;
         });
     });
 
@@ -401,40 +438,50 @@ function showResults() {
     document.getElementById("resultModal").style.display = "block";
 }
 
+function closeModal() {
+    document.getElementById("resultModal").style.display = "none";
+}
 
-    function closeModal() {
-        document.getElementById("resultModal").style.display = "none";
-    }
+function showResetModal() {
+    document.getElementById("resetModal").style.display = "block";
+}
 
-    function showResetModal() {
-        document.getElementById("resetModal").style.display = "block";
-    }
+function closeResetModal() {
+    document.getElementById("resetModal").style.display = "none";
+}
 
-    function closeResetModal() {
-        document.getElementById("resetModal").style.display = "none";
+function resetData() {
+    const enteredPassword = document.getElementById("resetPassword").value;
+    if (enteredPassword === correctPassword) {
+        localStorage.removeItem('votersData');
+        localStorage.removeItem('candidatesVotes');
+        votersData = {};
+        Object.keys(candidates).forEach(position => {
+            candidatesVotes[position] = Array(candidates[position].length).fill(0);
+        });
+        alert("Survey data has been reset.");
+        closeResetModal();
+    } else {
+        alert("Incorrect password.");
     }
+}
 
-    function resetData() {
-        const enteredPassword = document.getElementById("resetPassword").value;
-        if (enteredPassword === resetPassword) {
-            localStorage.removeItem('votersData');
-            localStorage.removeItem('candidatesVotes');
-            votersData = {};
-            candidatesVotes = {
-                governor: Array(candidates.governor.length).fill(0),
-                viceGovernor: Array(candidates.viceGovernor.length).fill(0),
-                houseRep: Array(candidates.houseRep.length).fill(0),
-                sangguniangBayan: Array(candidates.sangguniangBayan.length).fill(0),
-                mayor: Array(candidates.mayor.length).fill(0),
-                viceMayor: Array(candidates.viceMayor.length).fill(0),
-                sangguniangPanlungsod: Array(candidates.sangguniangPanlungsod.length).fill(0)
-            };
-            alert("Voting data has been reset.");
-            closeResetModal();
-        } else {
-            alert("Incorrect password.");
-        }
+const correctPassword = "111";  // Set your password here
+
+function validatePassword() {
+    const enteredPassword = document.getElementById("passwordInput").value;
+
+    if (enteredPassword === correctPassword) {
+        showElectionResults();
+        closePasswordModal();
+    } else {
+        alert("Incorrect password! Please try again.");
     }
+}
+
+function closePasswordModal() {
+    document.getElementById("passwordModal").style.display = "none";
+}
 </script>
 </body>
 </html>
